@@ -6,7 +6,7 @@
 /*   By: atigzim <atigzim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 15:03:09 by atigzim           #+#    #+#             */
-/*   Updated: 2025/01/20 15:04:10 by atigzim          ###   ########.fr       */
+/*   Updated: 2025/01/21 17:19:29 by atigzim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,4 +91,20 @@ char	*ft_substr(char const *s, int start, int len)
 	}
 	p[i] = '\0';
 	return (p);
+}
+
+int	check_new_line(char *buffer)
+{
+	int	i;
+
+	i = 0;
+	if (!buffer)
+		return (-1);
+	while (buffer[i])
+	{
+		if (buffer[i] == '\n')
+			return (i);
+		i++;
+	}
+	return (-1);
 }
