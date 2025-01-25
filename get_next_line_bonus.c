@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: atigzim <atigzim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/20 14:56:29 by atigzim           #+#    #+#             */
-/*   Updated: 2025/01/22 15:22:59 by atigzim          ###   ########.fr       */
+/*   Created: 2025/01/22 09:50:10 by atigzim           #+#    #+#             */
+/*   Updated: 2025/01/22 10:33:49 by atigzim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 char	*read_line(int fd, char **buffer)
 {
@@ -113,34 +113,18 @@ char	*process_line(int fd, char **buffer, char **full_buffer)
 
 char	*get_next_line(int fd)
 {
-	static char	*full_buffer;
+	static char	*full_buffer[1024];
 	char		*buffer;
 	char		*line;
 
-	if (fd < 0 || BUFFER_SIZE <= 0 || BUFFER_SIZE > 2147483647 || fd >= 1024)
-	{
-		if (full_buffer)
-			free(full_buffer);
-		return (NULL);
-	}
+	if (fd < 0 || BUFFER_SIZE <= 0 || BUFFER_SIZE >= 2147483647 || fd > 1024)
+		return (free(full_buffer[fd]), NULL);
 	buffer = malloc((size_t)BUFFER_SIZE + 1);
 	if (!buffer)
 		return (NULL);
-	if (!full_buffer)
-		line = process_line(fd, &buffer, &full_buffer);
+	if (!full_buffer[fd])
+		line = process_line(fd, &buffer, &full_buffer[fd]);
 	else
-		line = append_buffer(&full_buffer, fd, &buffer);
+		line = append_buffer(&full_buffer[fd], fd, &buffer);
 	return (free(buffer), line);
 }
-
-// int main()
-// {
-// 	int fd = open("abdo.txt", O_RDONLY);
-// 		char *f;
-// 	while((f = get_next_line(3)) != NULL)
-// 	{
-// 		printf("%s",f);
-// 		free(f);
-// 	}
-// 	close(fd);
-// }
